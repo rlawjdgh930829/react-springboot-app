@@ -1,23 +1,17 @@
-import logo from './logo.svg';
 import './App.css';
+import { Route, Routes } from 'react-router-dom';
+import Home from './components/Home/Home';
+import User from './components/User/User';
+import Navbar from './components/Navbar/Navbar';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Hello World
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <Navbar></Navbar>
+      <Routes>
+        <Route path='/' exact={true} element={<Home />} />
+        <Route path='/user/:userId' exact={true} element={<User />} />
+      </Routes>
     </div>
   );
 }
