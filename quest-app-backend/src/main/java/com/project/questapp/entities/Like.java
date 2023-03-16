@@ -7,11 +7,13 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "p_like")
+@Table(name = "like")
 @Data
 public class Like {
     @Id
     Long id;
+
     Long postId;
+
     Long userId;
 }
