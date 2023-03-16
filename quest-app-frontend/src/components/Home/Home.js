@@ -8,17 +8,16 @@ const Home = () => {
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('/post')
-      .then((res) => res.data)
-      .then((result) => {
-        setIsLoaded(true);
-        setPostList(result);
-      })
-      .catch((error) => {
-        setIsLoaded(true);
+    setIsLoaded(true);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/post');
+        setPostList(response.data);
+      } catch (error) {
         setError(error);
-      });
+      }
+    };
+    fetchData();
   }, []);
 
   if (error) {
