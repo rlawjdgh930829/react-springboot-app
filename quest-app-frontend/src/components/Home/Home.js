@@ -1,8 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Post from '../Post/Post';
 import axios from 'axios';
+import { Container, makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#cfe8fc',
+    height: '50vh',
+  },
+}));
 
 const Home = () => {
+  const classes = useStyles();
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
@@ -27,12 +40,17 @@ const Home = () => {
     return <div>Loading...</div>;
   } else {
     return (
-      <div>
-        Home
+      <Container fixed className={classes.container}>
         {postList.map((post) => (
-          <Post title={post.title} text={post.text}></Post>
+          <Post
+            key={post.userId}
+            userId={post.userId}
+            userName={post.userName}
+            title={post.title}
+            text={post.text}
+          ></Post>
         ))}
-      </div>
+      </Container>
     );
   }
 };
