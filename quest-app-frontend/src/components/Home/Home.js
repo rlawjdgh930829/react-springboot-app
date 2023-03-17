@@ -8,12 +8,13 @@ const Home = () => {
   const [postList, setPostList] = useState([]);
 
   useEffect(() => {
-    setIsLoaded(true);
     const fetchData = async () => {
       try {
         const response = await axios.get('/post');
+        setIsLoaded(true);
         setPostList(response.data);
       } catch (error) {
+        setIsLoaded(true);
         setError(error);
       }
     };
@@ -29,9 +30,7 @@ const Home = () => {
       <div>
         Home
         {postList.map((post) => (
-          <li key={post.id}>
-            <Post title={post.title} text={post.text}></Post>
-          </li>
+          <Post title={post.title} text={post.text}></Post>
         ))}
       </div>
     );
