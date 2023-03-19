@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Post from '../Post/Post';
 import axios from 'axios';
 import { Container, makeStyles } from '@material-ui/core';
+import PostForm from '../Post/PostForm';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -9,8 +10,7 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#cfe8fc',
-    height: '50vh',
+    backgroundColor: '#f0f5ff',
   },
 }));
 
@@ -20,7 +20,7 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
-  useEffect(() => {
+  const refreshPosts = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/post');
@@ -32,7 +32,11 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  };
+
+  useEffect(() => {
+    refreshPosts();
+  }, [postList]);
 
   if (error) {
     return <div>Error</div>;
@@ -41,6 +45,7 @@ const Home = () => {
   } else {
     return (
       <Container fixed className={classes.container}>
+        <PostForm userId={1} userName={'user1'} refreshPosts={refreshPosts} />
         {postList.map((post) => (
           <Post
             key={post.userId}

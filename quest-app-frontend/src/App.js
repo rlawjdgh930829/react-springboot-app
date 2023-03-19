@@ -8,7 +8,6 @@ function App() {
   return (
     <div className='App'>
       <Navbar></Navbar>
-      <br />
       <Routes>
         <Route path='/' exact={true} element={<Home />} />
         <Route path='/user/:userId' exact={true} element={<User />} />
