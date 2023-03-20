@@ -50,9 +50,6 @@ const Post = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const [error, setError] = useState(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-
   const [liked, setLiked] = useState(false);
   const [commentList, setCommnetList] = useState([]);
 
@@ -69,11 +66,9 @@ const Post = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/comment?postId=' + id);
-        setIsLoaded(true);
         setCommnetList(response.data);
       } catch (error) {
-        setIsLoaded(true);
-        setError(error);
+        console.log(error);
       }
     };
     fetchData();
@@ -113,18 +108,14 @@ const Post = (props) => {
       </CardActions>
       <Collapse in={expanded} timeout='auto' unmountOnExit>
         <Container fixed className={classes.container}>
-          {error
-            ? 'error'
-            : isLoaded
-            ? commentList.map((comment) => (
-                <Comment
-                  key={comment.id}
-                  userId={1}
-                  userName={'user1'}
-                  text={comment.text}
-                ></Comment>
-              ))
-            : 'Loading'}
+          {commentList.map((comment) => (
+            <Comment
+              key={comment.id}
+              userId={1}
+              userName={'user1'}
+              text={comment.text}
+            ></Comment>
+          ))}
         </Container>
       </Collapse>
     </Card>
