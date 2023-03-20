@@ -20,7 +20,11 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
-  const refreshPosts = () => {
+  const refreshPosts = (post) => {
+    setPostList([...postList, post]);
+  };
+
+  useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/post');
@@ -32,11 +36,7 @@ const Home = () => {
       }
     };
     fetchData();
-  };
-
-  useEffect(() => {
-    refreshPosts();
-  }, [postList]);
+  }, []);
 
   if (error) {
     return <div>Error</div>;
@@ -48,7 +48,7 @@ const Home = () => {
         <PostForm userId={1} userName={'user1'} refreshPosts={refreshPosts} />
         {postList.map((post) => (
           <Post
-            key={post.userId}
+            key={post.id}
             userId={post.userId}
             userName={post.userName}
             title={post.title}

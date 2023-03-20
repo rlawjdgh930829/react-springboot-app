@@ -51,8 +51,14 @@ const PostForm = (props) => {
         text: text,
         userId: userId,
       });
-
-      console.log(response.data);
+      const post = response.data;
+      refreshPosts({
+        id: post.id,
+        title: post.title,
+        text: post.text,
+        userId: post.user.id,
+        userName: post.user.userName,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +68,6 @@ const PostForm = (props) => {
     savePost();
     setTitle('');
     setText('');
-    refreshPosts();
   };
 
   const handleTitle = (value) => {
