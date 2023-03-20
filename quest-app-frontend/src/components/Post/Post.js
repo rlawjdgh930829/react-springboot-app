@@ -64,7 +64,7 @@ const Post = (props) => {
   const commnets = () => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/commnet?postId=' + id);
+        const response = await axios.get('/comment?postId=' + id);
         setCommnetList(response.data);
       } catch (error) {
         console.log(error);
