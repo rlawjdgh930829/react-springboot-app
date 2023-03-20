@@ -1,3 +1,4 @@
+import { Container } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -14,6 +15,7 @@ import axios from 'axios';
 import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Comment from '../Comment/Comment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,13 +50,15 @@ const Post = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
+  const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [liked, setLiked] = useState(false);
   const [commentList, setCommnetList] = useState([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
     commnets();
-    console.log(commentList);
   };
 
   const handleLike = () => {
@@ -65,9 +69,11 @@ const Post = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/comment?postId=' + id);
+        setIsLoaded(true);
         setCommnetList(response.data);
       } catch (error) {
-        console.log(error);
+        setIsLoaded(true);
+        setError(error);
       }
     };
     fetchData();
@@ -106,7 +112,20 @@ const Post = (props) => {
         </IconButton>
       </CardActions>
       <Collapse in={expanded} timeout='auto' unmountOnExit>
-        <CardContent></CardContent>
+        <Container fixed className={classes.container}>
+          {error
+            ? 'error'
+            : isLoaded
+            ? commentList.map((comment) => (
+                <Comment
+                  key={comment.id}
+                  userId={1}
+                  userName={'user1'}
+                  text={comment.text}
+                ></Comment>
+              ))
+            : 'Loading'}
+        </Container>
       </Collapse>
     </Card>
   );
