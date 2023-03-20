@@ -8,12 +8,12 @@ import { red } from '@material-ui/core/colors';
 import IconButton from '@material-ui/core/IconButton';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
-import clsx from 'clsx';
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 import axios from 'axios';
+import clsx from 'clsx';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
