@@ -11,8 +11,9 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CommentIcon from '@material-ui/icons/Comment';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,19 +43,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
-  const { title, text, userId, userName } = props;
+  const { id, title, text, userId, userName } = props.post;
 
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
   const [liked, setLiked] = useState(false);
+  const [commentList, setCommnetList] = useState([]);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
+    commnets();
+    console.log(commentList);
   };
 
   const handleLike = () => {
     setLiked(!liked);
+  };
+
+  const commnets = () => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('/commnet?postId=' + id);
+        setCommnetList(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
   };
 
   return (

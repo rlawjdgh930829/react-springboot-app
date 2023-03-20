@@ -47,13 +47,7 @@ const Home = () => {
       <Container fixed className={classes.container}>
         <PostForm userId={1} userName={'user1'} refreshPosts={refreshPosts} />
         {postList.map((post) => (
-          <Post
-            key={post.id}
-            userId={post.userId}
-            userName={post.userName}
-            title={post.title}
-            text={post.text}
-          ></Post>
+          <Post key={post.id} post={post}></Post>
         ))}
       </Container>
     );
