@@ -16,6 +16,10 @@ import clsx from 'clsx';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Comment from '../Comment/Comment';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+
+const theme = unstable_createMuiStrictModeTheme();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,50 +79,52 @@ const Post = (props) => {
   };
 
   return (
-    <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          <Link className={classes.link} to={{ pathname: '/user/' + userId }}>
-            <Avatar aria-label='recipe' className={classes.avatar}>
-              {userName.charAt(0).toUpperCase()}
-            </Avatar>
-          </Link>
-        }
-        title={title}
-      />
-      <CardContent>
-        <Typography variant='body2' color='textSecondary' component='p'>
-          {text}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <IconButton onClick={handleLike} aria-label='add to favorites'>
-          <FavoriteIcon style={liked ? { color: 'red' } : null} />
-        </IconButton>
-        <IconButton
-          className={clsx(classes.expand, {
-            [classes.expandOpen]: expanded,
-          })}
-          onClick={handleExpandClick}
-          aria-expanded={expanded}
-          aria-label='show more'
-        >
-          <CommentIcon />
-        </IconButton>
-      </CardActions>
-      <Collapse in={expanded} timeout='auto' unmountOnExit>
-        <Container fixed className={classes.container}>
-          {commentList.map((comment) => (
-            <Comment
-              key={comment.id}
-              userId={1}
-              userName={'user1'}
-              text={comment.text}
-            ></Comment>
-          ))}
-        </Container>
-      </Collapse>
-    </Card>
+    <ThemeProvider theme={theme}>
+      <Card className={classes.root}>
+        <CardHeader
+          avatar={
+            <Link className={classes.link} to={{ pathname: '/user/' + userId }}>
+              <Avatar aria-label='recipe' className={classes.avatar}>
+                {userName.charAt(0).toUpperCase()}
+              </Avatar>
+            </Link>
+          }
+          title={title}
+        />
+        <CardContent>
+          <Typography variant='body2' color='textSecondary' component='p'>
+            {text}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <IconButton onClick={handleLike} aria-label='add to favorites'>
+            <FavoriteIcon style={liked ? { color: 'red' } : null} />
+          </IconButton>
+          <IconButton
+            className={clsx(classes.expand, {
+              [classes.expandOpen]: expanded,
+            })}
+            onClick={handleExpandClick}
+            aria-expanded={expanded}
+            aria-label='show more'
+          >
+            <CommentIcon />
+          </IconButton>
+        </CardActions>
+        <Collapse in={expanded} timeout='auto' unmountOnExit>
+          <Container fixed className={classes.container}>
+            {commentList.map((comment) => (
+              <Comment
+                key={comment.id}
+                userId={1}
+                userName={'user1'}
+                text={comment.text}
+              ></Comment>
+            ))}
+          </Container>
+        </Collapse>
+      </Card>
+    </ThemeProvider>
   );
 };
 
