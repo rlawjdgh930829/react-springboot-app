@@ -1,4 +1,4 @@
-package com.project.questapp.service;
+package com.project.questapp.services;
 
 import com.project.questapp.entities.Comment;
 import com.project.questapp.entities.Post;

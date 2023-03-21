@@ -4,7 +4,7 @@ import com.project.questapp.entities.Post;
 import com.project.questapp.requests.PostCreateRequest;
 import com.project.questapp.requests.PostUpdateRequest;
 import com.project.questapp.responses.PostResponse;
-import com.project.questapp.service.PostService;
+import com.project.questapp.services.PostService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -30,6 +30,7 @@ const Home = () => {
         const response = await axios.get('/post');
         setIsLoaded(true);
         setPostList(response.data);
+        console.log(response.data);
       } catch (error) {
         setIsLoaded(true);
         setError(error);
@@ -47,7 +48,7 @@ const Home = () => {
       <Container fixed className={classes.container}>
         <PostForm userId={1} userName={'user1'} refreshPosts={refreshPosts} />
         {postList.map((post) => (
-          <Post key={post.id} post={post}></Post>
+          <Post key={post.id} post={post} like={post.postLikes}></Post>
         ))}
       </Container>
     );

@@ -3,7 +3,7 @@ package com.project.questapp.controllers;
 import com.project.questapp.entities.Comment;
 import com.project.questapp.requests.CommentCreateRequest;
 import com.project.questapp.requests.CommentUpdateRequest;
-import com.project.questapp.service.CommentService;
+import com.project.questapp.services.CommentService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.project.questapp.service;
+package com.project.questapp.services;
 
 import com.project.questapp.entities.User;
 import com.project.questapp.repositorys.UserRepository;

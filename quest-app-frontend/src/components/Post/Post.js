@@ -50,6 +50,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Post = (props) => {
+  const { like } = props;
   const { id, title, text, userId, userName } = props.post;
 
   const classes = useStyles();
@@ -57,6 +58,8 @@ const Post = (props) => {
 
   const [liked, setLiked] = useState(false);
   const [commentList, setCommnetList] = useState([]);
+
+  const likeCount = like.length;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -105,6 +108,7 @@ const Post = (props) => {
           <IconButton onClick={handleLike} aria-label='add to favorites'>
             <FavoriteIcon style={liked ? { color: 'red' } : null} />
           </IconButton>
+          {likeCount}
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
