@@ -18,6 +18,7 @@ import { Link } from 'react-router-dom';
 import Comment from '../Comment/Comment';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { unstable_createMuiStrictModeTheme } from '@material-ui/core/styles';
+import CommentForm from '../Comment/CommnetForm';
 
 const theme = unstable_createMuiStrictModeTheme();
 
@@ -64,6 +65,10 @@ const Post = (props) => {
 
   const handleLike = () => {
     setLiked(!liked);
+  };
+
+  const refreshCommnets = (comment) => {
+    setCommnetList([...commentList, comment]);
   };
 
   const commnets = () => {
@@ -121,6 +126,12 @@ const Post = (props) => {
                 text={comment.text}
               ></Comment>
             ))}
+            <CommentForm
+              userId={1}
+              userName={'user1'}
+              postId={id}
+              refreshCommnets={refreshCommnets}
+            />
           </Container>
         </Collapse>
       </Card>
