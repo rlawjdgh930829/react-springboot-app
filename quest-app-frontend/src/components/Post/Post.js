@@ -70,8 +70,8 @@ const Post = (props) => {
     setLiked(!liked);
   };
 
-  const refreshCommnets = (comment) => {
-    setCommnetList([...commentList, comment]);
+  const refreshCommnets = () => {
+    commnets();
   };
 
   const commnets = () => {

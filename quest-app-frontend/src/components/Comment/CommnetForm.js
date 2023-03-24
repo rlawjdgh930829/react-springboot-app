@@ -41,8 +41,9 @@ const CommentForm = (props) => {
         userId: userId,
         text: text,
       });
+      console.log(response.data);
       setText('');
-      refreshCommnets(response.data);
+      refreshCommnets();
     } catch (error) {
       console.log(error);
     }
