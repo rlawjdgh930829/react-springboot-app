@@ -13,7 +13,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import axios from 'axios';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Comment from '../Comment/Comment';
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -56,18 +56,14 @@ const Post = (props) => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
 
-  const [liked, setLiked] = useState(false);
   const [commentList, setCommnetList] = useState([]);
-
-  const likeCount = like.length;
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(like.length);
+  const [likeId, setLikeId] = useState();
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
     commnets();
-  };
-
-  const handleLike = () => {
-    setLiked(!liked);
   };
 
   const refreshCommnets = () => {
@@ -85,6 +81,55 @@ const Post = (props) => {
     };
     fetchData();
   };
+
+  const saveLike = () => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post('like', {
+          postId: id,
+          userId: userId,
+        });
+        setLikeId(response.data.id);
+        setLikeCount(likeCount + 1);
+        console.log(response.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  };
+
+  const deleteLike = () => {
+    const fetchData = async () => {
+      try {
+        await axios.delete('like/' + likeId);
+        setLikeCount(likeCount - 1);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  };
+
+  const handleLike = () => {
+    setIsLiked(!isLiked);
+    if (!isLiked) {
+      saveLike();
+    } else {
+      deleteLike();
+    }
+  };
+
+  useEffect(() => {
+    const checkLike = () => {
+      const likeControl = like.find((l) => l.userId === userId);
+      if (likeControl != null) {
+        setLikeId(likeControl.id);
+        setIsLiked(true);
+      }
+    };
+    checkLike();
+  }, [like, userId]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -106,7 +151,7 @@ const Post = (props) => {
         </CardContent>
         <CardActions disableSpacing>
           <IconButton onClick={handleLike} aria-label='add to favorites'>
-            <FavoriteIcon style={liked ? { color: 'red' } : null} />
+            <FavoriteIcon style={isLiked ? { color: 'red' } : null} />
           </IconButton>
           {likeCount}
           <IconButton
