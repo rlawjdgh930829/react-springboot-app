@@ -20,11 +20,7 @@ const Home = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [postList, setPostList] = useState([]);
 
-  const refreshPosts = (post) => {
-    setPostList([...postList, post]);
-  };
-
-  useEffect(() => {
+  const refreshPosts = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('/post');
@@ -37,6 +33,10 @@ const Home = () => {
       }
     };
     fetchData();
+  };
+
+  useEffect(() => {
+    refreshPosts();
   }, []);
 
   if (error) {

@@ -51,14 +51,8 @@ const PostForm = (props) => {
         text: text,
         userId: userId,
       });
-      const post = response.data;
-      refreshPosts({
-        id: post.id,
-        title: post.title,
-        text: post.text,
-        userId: post.user.id,
-        userName: post.user.userName,
-      });
+      console.log(response.data);
+      refreshPosts();
     } catch (error) {
       console.log(error);
     }
