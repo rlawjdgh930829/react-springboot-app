@@ -28,7 +28,7 @@ const Auth = () => {
 
   const sendRequest = async (path) => {
     try {
-      const response = await axios.post('/auth' + path, {
+      const response = await axios.post('/auth/' + path, {
         userName: username,
         password: password,
       });
@@ -52,7 +52,7 @@ const Auth = () => {
         color='primary'
         variant='contained'
         style={{ marginTop: 10, color: 'white' }}
-        onClick={handelRegister()}
+        onClick={() => handelRegister()}
       >
         Register
       </Button>
@@ -60,7 +60,7 @@ const Auth = () => {
         color='primary'
         variant='contained'
         style={{ marginTop: 10, color: 'white' }}
-        onClick={handelLogin()}
+        onClick={() => handelLogin()}
       >
         Login
       </Button>
