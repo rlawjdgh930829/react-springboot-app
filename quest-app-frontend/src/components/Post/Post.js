@@ -86,10 +86,18 @@ const Post = (props) => {
   const saveLike = () => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('/like', {
-          postId: id,
-          userId: localStorage.getItem('currentUser'),
-        });
+        const response = await axios.post(
+          '/like',
+          {
+            postId: id,
+            userId: localStorage.getItem('currentUser'),
+          },
+          {
+            headers: {
+              Authorization: localStorage.getItem('tokenKey'),
+            },
+          }
+        );
         setLikeId(response.data.id);
         setLikeCount(likeCount + 1);
         console.log(response.data);
@@ -103,7 +111,11 @@ const Post = (props) => {
   const deleteLike = () => {
     const fetchData = async () => {
       try {
-        await axios.delete('/like/' + likeId);
+        await axios.delete('/like/' + likeId, {
+          headers: {
+            Authorization: localStorage.getItem('tokenKey'),
+          },
+        });
         setLikeCount(likeCount - 1);
       } catch (error) {
         console.log(error);
@@ -124,7 +136,7 @@ const Post = (props) => {
   useEffect(() => {
     const checkLike = () => {
       const likeControl = like.find(
-        (l) => l.userId === localStorage.getItem('currentUser')
+        (l) => l.userId + '' === localStorage.getItem('currentUser')
       );
       if (likeControl != null) {
         setLikeId(likeControl.id);

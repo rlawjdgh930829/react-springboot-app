@@ -36,11 +36,19 @@ const CommentForm = (props) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('/comment', {
-        postId: postId,
-        userId: userId,
-        text: text,
-      });
+      const response = await axios.post(
+        '/comment',
+        {
+          postId: postId,
+          userId: userId,
+          text: text,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('tokenKey'),
+          },
+        }
+      );
       console.log(response.data);
       setText('');
       refreshCommnets();

@@ -46,12 +46,22 @@ const PostForm = (props) => {
 
   const savePost = async () => {
     try {
-      const response = await axios.post('/post', {
-        title: title,
-        text: text,
-        userId: userId,
-      });
+      const response = await axios.post(
+        '/post',
+        {
+          title: title,
+          text: text,
+          userId: userId,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('tokenKey'),
+          },
+        }
+      );
       console.log(response.data);
+      setTitle('');
+      setText('');
       refreshPosts();
     } catch (error) {
       console.log(error);
@@ -60,8 +70,6 @@ const PostForm = (props) => {
 
   const handleSubmit = () => {
     savePost();
-    setTitle('');
-    setText('');
   };
 
   const handleTitle = (value) => {
