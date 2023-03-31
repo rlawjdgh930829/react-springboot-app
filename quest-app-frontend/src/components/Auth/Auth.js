@@ -1,7 +1,6 @@
 import { Button, FormControl, TextField } from '@material-ui/core';
 import axios from 'axios';
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [username, setUsername] = useState('');
@@ -15,8 +14,6 @@ const Auth = () => {
     setPassword(value);
   };
 
-  const navigate = useNavigate();
-
   const handelRegister = () => {
     sendRequest('register');
   };
@@ -25,7 +22,7 @@ const Auth = () => {
     sendRequest('login');
     setUsername('');
     setPassword('');
-    navigate('/');
+    window.location.href = '/';
   };
 
   const sendRequest = async (path) => {

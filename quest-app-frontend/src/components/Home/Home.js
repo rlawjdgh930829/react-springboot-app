@@ -46,7 +46,16 @@ const Home = () => {
   } else {
     return (
       <Container fixed className={classes.container}>
-        <PostForm userId={1} userName={'user1'} refreshPosts={refreshPosts} />
+        {localStorage.getItem('currentUser') == null ? (
+          ''
+        ) : (
+          <PostForm
+            userId={localStorage.getItem('currentUser')}
+            userName={localStorage.getItem('userName')}
+            refreshPosts={refreshPosts}
+          />
+        )}
+
         {postList.map((post) => (
           <Post key={post.id} post={post} like={post.postLikes}></Post>
         ))}

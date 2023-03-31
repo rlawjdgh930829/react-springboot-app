@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -26,8 +26,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = () => {
-  const userId = 6;
   const classes = useStyles();
+  const navigate = useNavigate();
+
+  const handelLogout = () => {
+    localStorage.clear();
+    navigate(0);
+  };
 
   return (
     <div className={classes.root}>
@@ -47,9 +52,26 @@ const Navbar = () => {
             </Link>
           </Typography>
           <Typography variant='h6'>
-            <Link className={classes.link} to={{ pathname: '/user/' + userId }}>
-              User
-            </Link>
+            {localStorage.getItem('currentUser') == null ? (
+              <Link className={classes.link} to='/auth'>
+                Login / Register
+              </Link>
+            ) : (
+              <div>
+                <Link
+                  className={classes.link}
+                  to={{
+                    pathname: '/user/' + localStorage.getItem('currentUser'),
+                  }}
+                >
+                  Profile
+                </Link>
+                {' / '}
+                <Link className={classes.link} onClick={() => handelLogout()}>
+                  Logout
+                </Link>
+              </div>
+            )}
           </Typography>
         </Toolbar>
       </AppBar>

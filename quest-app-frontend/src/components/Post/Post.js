@@ -60,6 +60,7 @@ const Post = (props) => {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(like.length);
   const [likeId, setLikeId] = useState();
+  const isDisabled = localStorage.getItem('currentUser') == null ? true : false;
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -85,9 +86,9 @@ const Post = (props) => {
   const saveLike = () => {
     const fetchData = async () => {
       try {
-        const response = await axios.post('like', {
+        const response = await axios.post('/like', {
           postId: id,
-          userId: userId,
+          userId: localStorage.getItem('currentUser'),
         });
         setLikeId(response.data.id);
         setLikeCount(likeCount + 1);
@@ -102,7 +103,7 @@ const Post = (props) => {
   const deleteLike = () => {
     const fetchData = async () => {
       try {
-        await axios.delete('like/' + likeId);
+        await axios.delete('/like/' + likeId);
         setLikeCount(likeCount - 1);
       } catch (error) {
         console.log(error);
@@ -122,7 +123,9 @@ const Post = (props) => {
 
   useEffect(() => {
     const checkLike = () => {
-      const likeControl = like.find((l) => l.userId === userId);
+      const likeControl = like.find(
+        (l) => l.userId === localStorage.getItem('currentUser')
+      );
       if (likeControl != null) {
         setLikeId(likeControl.id);
         setIsLiked(true);
@@ -150,7 +153,11 @@ const Post = (props) => {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton onClick={handleLike} aria-label='add to favorites'>
+          <IconButton
+            disabled={isDisabled}
+            onClick={handleLike}
+            aria-label='add to favorites'
+          >
             <FavoriteIcon style={isLiked ? { color: 'red' } : null} />
           </IconButton>
           {likeCount}
@@ -175,12 +182,16 @@ const Post = (props) => {
                 text={comment.text}
               ></Comment>
             ))}
-            <CommentForm
-              userId={1}
-              userName={'user1'}
-              postId={id}
-              refreshCommnets={refreshCommnets}
-            />
+            {isDisabled ? (
+              ''
+            ) : (
+              <CommentForm
+                userId={1}
+                userName={'user1'}
+                postId={id}
+                refreshCommnets={refreshCommnets}
+              />
+            )}
           </Container>
         </Collapse>
       </Card>
