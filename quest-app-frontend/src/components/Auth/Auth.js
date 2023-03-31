@@ -1,6 +1,7 @@
 import { Button, FormControl, TextField } from '@material-ui/core';
 import axios from 'axios';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Auth = () => {
   const [username, setUsername] = useState('');
@@ -14,16 +15,17 @@ const Auth = () => {
     setPassword(value);
   };
 
+  const navigate = useNavigate();
+
   const handelRegister = () => {
     sendRequest('register');
-    setUsername('');
-    setPassword('');
   };
 
   const handelLogin = () => {
     sendRequest('login');
     setUsername('');
     setPassword('');
+    navigate('/');
   };
 
   const sendRequest = async (path) => {
@@ -33,6 +35,9 @@ const Auth = () => {
         password: password,
       });
       console.log(response.data);
+      localStorage.setItem('tokenKey', response.data.message);
+      localStorage.setItem('currentUser', response.data.userId);
+      localStorage.setItem('userName', username);
     } catch (error) {
       console.log(error);
     }
@@ -42,10 +47,12 @@ const Auth = () => {
     <FormControl>
       <TextField
         label='username'
+        value={username}
         onChange={(e) => handleUsername(e.target.value)}
       />
       <TextField
         label='password'
+        value={password}
         onChange={(e) => handlePassword(e.target.value)}
       />
       <Button

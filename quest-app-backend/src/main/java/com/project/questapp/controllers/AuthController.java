@@ -2,6 +2,7 @@ package com.project.questapp.controllers;
 
 import com.project.questapp.entities.User;
 import com.project.questapp.requests.UserRequest;
+import com.project.questapp.responses.AuthRespones;
 import com.project.questapp.security.JwtTokenProvider;
 import com.project.questapp.services.UserService;
 import org.springframework.http.HttpStatus;
@@ -36,23 +37,30 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserRequest userRequest) {
+    public AuthRespones login(@RequestBody UserRequest userRequest) {
         UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userRequest.getUserName(), userRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(authToken);
         SecurityContextHolder.getContext().setAuthentication(auth);
         String jwtToken = jwtTokenProvider.generateJwtToken(auth);
-        return "Bearer " + jwtToken;
+        User user = userService.getOneUserByUserName(userRequest.getUserName());
+        AuthRespones authRespones = new AuthRespones();
+        authRespones.setMessage("Bearer " + jwtToken);
+        authRespones.setUserId(user.getId());
+        return authRespones;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserRequest userRequest) {
+    public ResponseEntity<AuthRespones> register(@RequestBody UserRequest userRequest) {
+        AuthRespones authRespones = new AuthRespones();
         if(userService.getOneUserByUserName(userRequest.getUserName()) != null) {
-            return new ResponseEntity<>("Username already in use", HttpStatus.BAD_REQUEST);
+            authRespones.setMessage("Username already in use");
+            return new ResponseEntity<>(authRespones, HttpStatus.BAD_REQUEST);
         }
         User user = new User();
         user.setUserName(userRequest.getUserName());
         user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
         userService.createUser(user);
-        return new ResponseEntity<>("User successfully registered", HttpStatus.CREATED);
+        authRespones.setMessage("User successfully registered");
+        return new ResponseEntity<>(authRespones, HttpStatus.CREATED);
     }
 }

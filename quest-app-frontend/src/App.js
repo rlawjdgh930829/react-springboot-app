@@ -1,5 +1,5 @@
 import './App.css';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from './components/Home/Home';
 import User from './components/User/User';
 import Navbar from './components/Navbar/Navbar';
@@ -12,7 +12,17 @@ function App() {
       <Routes>
         <Route path='/' exact={true} element={<Home />} />
         <Route path='/user/:userId' exact={true} element={<User />} />
-        <Route path='/auth' exact={true} element={<Auth />} />
+        <Route
+          path='/auth'
+          exact={true}
+          element={
+            localStorage.getItem('currentUser') != null ? (
+              <Navigate to='/' />
+            ) : (
+              <Auth />
+            )
+          }
+        />
       </Routes>
     </div>
   );
