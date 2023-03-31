@@ -19,10 +19,11 @@ const Auth = () => {
   };
 
   const handelLogin = () => {
-    sendRequest('login');
-    setUsername('');
-    setPassword('');
-    window.location.href = '/';
+    sendRequest('login').then(() => {
+      setUsername('');
+      setPassword('');
+      window.location.href = '/';
+    });
   };
 
   const sendRequest = async (path) => {
